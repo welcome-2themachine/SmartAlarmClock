@@ -17,15 +17,16 @@
 // Temboo & Google Calendar/GMail configuration.
 
 // Temboo account username:
-#define TEMBOO_ACCOUNT      "YOUR TEMBOO ACCOUNT NAME"
+// Temboo account username:
+#define TEMBOO_ACCOUNT      ""
 // Temboo account app name:
-#define TEMBOO_APP          "YOUR TEMBOO APPLICATION NAME"
+#define TEMBOO_APP          "smartalarm"
 // Temboo account app key:
-#define TEMBOO_KEY          "YOUR TEMBOO APPLICATION KEY"
+#define TEMBOO_KEY          ""
 // Temboo Google calendar credential name:
-#define CALENDAR_CREDENTIALS  "GoogleCalendar"
+#define CALENDAR_CREDENTIALS  "GoogleCalendarNew"
 // Google calendar ID:
-#define CALENDAR_ID         "YOUR GMAIL ADDRESS"
+#define CALENDAR_ID         ""
 // Temboo Gmail credential name:
 #define GMAIL_CREDENTIALS    "GoogleMail"
 // Mail subject keyword to trigger alarm:
@@ -331,18 +332,10 @@ void draw_display(int time, int alarmTime) {
   time_to_string(time, timeString);
   Tft.drawString(timeString, MAX_X-10, 10, 3, CLOCK_COLOR);
   // Draw clock.
-  Tft.drawCircle(CLOCK_CENTER_X, CLOCK_CENTER_Y, CLOCK_RADIUS, CLOCK_COLOR);
-  // Draw hour ticks.
-  for (int i = 0; i < 12; ++i) {
-    draw_clock_angle((i / 12.0) * TWO_PI, CLOCK_RADIUS-CLOCK_TICK_SIZE, CLOCK_RADIUS);
-  }
   // Draw hour hand.
   int hour12, minute;
   bool am;
   time_to_hour_minute(time, hour12, minute, am);
-  draw_clock_angle((hour12 / 12.0) * TWO_PI + ((minute / 60.0) * (TWO_PI / 12.0)), 0, 50);
-  // Draw minute hand.
-  draw_clock_angle((minute / 60.0) * TWO_PI, 0, 80);
   // Draw alarm time.
   if (alarmTime >= 0) {
     time_to_string(alarmTime, timeString);
@@ -357,12 +350,4 @@ void draw_display(int time, int alarmTime) {
   Tft.drawRectangle(REFRESH_X, REFRESH_Y, BUTTON_HEIGHT, BUTTON_WIDTH, CLOCK_COLOR);
 }
 
-// Draw segment of a line from the center of the clock outward at the specified angle and start/end radius.
-void draw_clock_angle(float angle, float startRadius, float endRadius) {
-  int startX = int(startRadius*cos(angle)) + CLOCK_CENTER_X;
-  int startY = int(startRadius*sin(angle)) + CLOCK_CENTER_Y;
-  int endX = int(endRadius*cos(angle)) + CLOCK_CENTER_X;
-  int endY = int(endRadius*sin(angle)) + CLOCK_CENTER_Y;
-  Tft.drawLine(startX, startY, endX, endY, CLOCK_COLOR);
-}
 
