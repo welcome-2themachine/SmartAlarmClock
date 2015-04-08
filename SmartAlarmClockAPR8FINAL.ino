@@ -17,7 +17,7 @@
 // Temboo & Google Calendar/GMail configuration.
 #define TEMBOO_ACCOUNT      ""// Temboo account app name:
 #define TEMBOO_APP          "smartalarm"// Temboo account app key:
-#define TEMBOO_KEY          ""// Temboo Google calendar credential name:
+#define TEMBOO_KEY          "" // Temboo Google calendar credential name:
 #define CALENDAR_CREDENTIALS  "GoogleCalendarNew"// Google calendar ID:
 #define CALENDAR_ID         ""// Temboo Gmail credential name:
 #define GMAIL_CREDENTIALS    "GoogleMail"// Mail subject keyword to trigger alarm:
