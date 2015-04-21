@@ -11,13 +11,13 @@
 *  with the Linux process or on the Arduino Board
 */
 
-#define TEM_ACCOUNT        "arduinotempleu"
-#define TEM_APP            "smartalarm"
-#define TEM_KEY            "ff8e0dd4b9d949c0aecf5b85e10ce893"
-#define CAL_CREDS          "GoogleCalendarNew"
-#define CAL_ID             "arduino.test.temple@gmail.com"
-#define GM_CREDS           "GoogleMail"
-#define GM_KW              "WAKE UP"
+#define TEM_ACCOUNT        ""
+#define TEM_APP            ""
+#define TEM_KEY            ""
+#define CAL_CREDS          ""
+#define CAL_ID             ""
+#define GM_CREDS           ""
+#define GM_KW              ""
 
 #define ALARM_SOUND        "/mnt/sda1/arduino/www/SmartAlarmClock/Annoying_Alarm_Clock.mp3"
 #define ALARM_OPTIONS      "--attenuate=-12"
