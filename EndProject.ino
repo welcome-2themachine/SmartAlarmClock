@@ -11,18 +11,18 @@
 *  with the Linux process or on the Arduino Board
 */
 
-#define TEM_ACCOUNT        ""
-#define TEM_APP            ""
-#define TEM_KEY            ""
-#define CAL_CREDS          ""
-#define CAL_ID             ""
-#define GM_CREDS           ""
-#define GM_KW              ""
+#define TEM_ACCOUNT        "arduinotempleu"
+#define TEM_APP            "smartalarm"
+#define TEM_KEY            "ff8e0dd4b9d949c0aecf5b85e10ce893"
+#define CAL_CREDS          "GoogleCalendarNew"
+#define CAL_ID             "arduino.test.temple@gmail.com"
+#define GM_CREDS           "GoogleMail"
+#define GM_KW              "WAKE UP"
 
 #define ALARM_SOUND        "/mnt/sda1/arduino/www/SmartAlarmClock/Annoying_Alarm_Clock.mp3"
 #define ALARM_OPTIONS      "--attenuate=-12"
-#define ALARM_REFRESH      "60"//minutes between alarm refreshes
-#define ALARM_BUFFER       "60"//amount of time before first meeting the alarm sounds
+#define ALARM_REFRESH      60//minutes between alarm refreshes
+#define ALARM_BUFFER       60//amount of time before first meeting the alarm sounds
 
 #define TS_MINX 140
 #define TS_MAXX 900
@@ -139,7 +139,7 @@ void loop() {
     Tft.fillRectangle(R_BUTTON_X, R_BUTTON_Y, BUTTON_HEIGHT, BUTTON_WIDTH, STOCK_COLOR);
     Tft.drawString("Refresh", R_BUTTON_X + 30, R_BUTTON_Y + 5, 2, ALT_COLOR);
     time = get_time();
-    alarm = refresh();
+    refresh();
     Tft.paintScreenBlack();
     draw(time, alarm);
   }
@@ -148,7 +148,7 @@ void loop() {
   *  the screen black and redraws the display.
   */
   
-  if(alarm != -1 && touch.z > screen.pressureThreshhold && touch.x >= L_BUTTON_X && touch.x <= (L_BUTTON_X + BUTTON_HEIGHT) && touch.y >= L_BUTTON_Y && touch.y <= (L_BUTTON_Y + BUTTON_WIDTH)){
+  if(alarm > -1 && touch.z > screen.pressureThreshhold && touch.x >= L_BUTTON_X && touch.x <= (L_BUTTON_X + BUTTON_HEIGHT) && touch.y >= L_BUTTON_Y && touch.y <= (L_BUTTON_Y + BUTTON_WIDTH)){
     Tft.fillRectangle(L_BUTTON_X, L_BUTTON_Y, BUTTON_HEIGHT. BUTTON_WIDTH, STOCK_COLOR);
     Tft.drawString("Cancel", L_BUTTON_X + 30, L_BUTTON_Y + 5, 2, ALT_COLOR);
     alarm = -1;
@@ -176,7 +176,7 @@ void alarm_start(){
   linux.addParameter(ALARM_OPTIONS);
   linux.addParameter(ALARM_SOUND);
   linux.runAsynchronously();
-  linux = true;
+  playing = true;
 }
 /*
 *  ensures that there is not alarm playing then plays the alarm
@@ -185,7 +185,7 @@ void alarm_start(){
 void alarm_stop(){
   if(linux.running()){
     linux.close();
-    linux == false;
+    playing == false;
   }
 }
 /*
@@ -245,7 +245,7 @@ void get_date(char *dateString){
   date.begin("date");
   date.addParameter("+%a:%d:%b:%Y");
   date.run();
-  dateString = date.read();
+  dateString = (char *)date.read();
   dateString[4]  = ' ';
   dateString[6]  = ' ';
   dateString[10] = ' ';
@@ -303,6 +303,21 @@ void draw(int time, int alarmTime) {
   char alarmString[9];
   char timeString[9];
   time_to_string(time, timeString);
+  Tft.drawString("Weather Condition", WEATHER_X, WEATHER_Y, 1, STOCK_COLOR);
+  Tft.drawString("Temp", TEMP_X, TEMP_Y, 2, STOCK_COLOR);
+  Tft.drawString("Hi|Lo", HILO_X, HILO_Y, 2, STOCK_COLOR);
+  Tft.drawString(timeString, TIME_X, TIME_Y, 7, STOCK_COLOR);
+  Tft.drawString(dateString, DATE_X, DATE_Y, 2, STOCK_COLOR);
+  int hour12, minute;
+  time_to_hour_minute(time, hour12, minute);
+  if (alarmTime >= 0) {
+    time_to_string(alarmTime, timeString);
+    Tft.drawString("Alarm:", ALARM_X, ALARM_Y, 2, STOCK_COLOR);
+    Tft.drawString(alarmString, ALARM_TIME_X, ALARM_TIME_Y, 2, STOCK_COLOR);
+    Tft.drawString("Cancel", 30, 30, 2, TEXT_COLOR);
+  }
+  Tft.drawString("Refrsh", R_BUTTON_X, R_BUTTON_Y, 2, TEXT_COLOR);
+}
   Tft.drawString("Weather Condition", WEATHER_X, WEATHER_Y, 1, STOCK_COLOR);
   Tft.drawString("Temp", TEMP_X, TEMP_Y, 2, STOCK_COLOR);
   Tft.drawString("Hi|Lo", HILO_X, HILO_Y, 2, STOCK_COLOR);
